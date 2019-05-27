@@ -207,8 +207,9 @@ div.conniArrow, div.publishArrow, div.subArrow, div.messagesArrow {
 }
 
 .qos, .date, .topicM, .retain {
-    color: #bababa;
+    color: darkgray;
     font-size: 12px;
+
 }
 
 .columns h3 {

@@ -247,6 +247,7 @@ limitations under the License.
                 <div class="large-12 columns">
 
                     <a id="addSubButton" href="#data" class="small button addSubButton">Add New Topic Subscription</a>
+                    <a id="subToAllTopics" onClick="subToAllTopic()" class="small button addSubButton">Subscribe to all topics</a>
 
                     <div style="display:none">
                         <div id="data">
@@ -314,6 +315,13 @@ limitations under the License.
         return text;
     }
 
+    function subToAllTopic(){
+        topics.forEach((topic) => {
+            console.log("subscribe auto to " + topic);
+            websocketclient.subscribe(topic.id, 1, topic.color);
+        });
+    }
+
     $(document).foundation();
     $(document).ready(function () {
 
@@ -333,6 +341,10 @@ limitations under the License.
         websocketclient.render.toggle('publish');
         websocketclient.render.toggle('messages');
         websocketclient.render.toggle('sub');
+
+        if(autoconnect){
+            websocketclient.connect();
+        }
     });
 </script>
 </body>

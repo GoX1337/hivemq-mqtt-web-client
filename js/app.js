@@ -23,9 +23,10 @@ var websocketclient = {
     'subscriptions': [],
     'messages': [],
     'connected': false,
+    'interval' : null,
 
     'connect': function () {
-
+       
         var host = $('#urlInput').val();
         var port = parseInt($('#portInput').val(), 10);
         var clientId = $('#clientIdInput').val();
@@ -70,6 +71,13 @@ var websocketclient = {
     },
 
     'onConnect': function () {
+
+        if(websocketclient.interval != null){
+            console.log("clean reconnection interval");
+            clearInterval(websocketclient.interval);
+            websocketclient.interval = null;
+        }
+
         websocketclient.connected = true;
         console.log("connected");
         var body = $('body').addClass('connected').removeClass('notconnected').removeClass('connectionbroke');
@@ -104,6 +112,11 @@ var websocketclient = {
         //Cleanup subscriptions
         websocketclient.subscriptions = [];
         websocketclient.render.clearSubscriptions();
+
+        websocketclient.interval = setInterval(()=> {
+            console.log("reconnection try...");
+            websocketclient.connect();
+        }, 1000);
     },
 
     'onMessageArrived': function (message) {
@@ -239,7 +252,7 @@ var websocketclient = {
     'render': {
 
         'showError': function (message) {
-            alert(message);
+            console.log(message);
         },
         'messages': function () {
 
